@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ExerciseMuscle {
+  abs
+  back
+  biceps
+  calves
+  chest
+  core
+  forearms
+  glutes
+  hamstrings
+  hip_flexors
+  lower_back
+  neck
+  obliques
+  quads
+  rear_delts
+  shoulders
+  shins
+  traps
+  triceps
+  upper_back
+}
+
+enum ExerciseEquipment {
+  barbell
+  body_weight
+  cable
+  dumbbell
+  kettlebell
+  medicine_ball
+  none
+  resistance_band
+}
+
+enum ExerciseType {
+  strength
+  cardio
+  flexibility
+  balance
+}
+
+model Exercise {
+  id         String              @id @default(cuid())
+  name       String              @unique
+  youtubeUrl String
+  types      ExerciseType[]
+  equipment  ExerciseEquipment[]
+  muscles    ExerciseMuscle[]
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+}
