@@ -4,6 +4,8 @@ import http from "http";
 import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
+import { exerciseRoutes } from "./api/exercises/exercises.routes";
+import { programsRoutes } from "./api/programs/programs.routes";
 
 dotenv.config();
 
@@ -32,8 +34,9 @@ if (process.env.NODE_ENV === "production") {
 
 //Routes
 
-import { exerciseRoutes } from "./api/exercises/exercises.routes";
 app.use(`/api/v${process.env.CURRENT_API_VERSION}/exercises`, exerciseRoutes);
+
+app.use(`/api/v${process.env.CURRENT_API_VERSION}/programs`, programsRoutes);
 // Catch-all route
 app.all("/{*any}", (req: Request, res: Response) => {
   res.sendFile(path.resolve("public/index.html"));

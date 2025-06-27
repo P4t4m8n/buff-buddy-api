@@ -49,13 +49,65 @@ enum ExerciseType {
   balance
 }
 
+enum DaysOfWeek {
+  monday
+  tuesday
+  wednesday
+  thursday
+  friday
+  saturday
+  sunday
+}
+
 model Exercise {
-  id         String              @id @default(cuid())
-  name       String              @unique
-  youtubeUrl String
-  types      ExerciseType[]
-  equipment  ExerciseEquipment[]
-  muscles    ExerciseMuscle[]
-  createdAt  DateTime            @default(now())
-  updatedAt  DateTime            @updatedAt
+  id               String              @id @default(cuid())
+  name             String              @unique
+  youtubeUrl       String
+  types            ExerciseType[]
+  equipment        ExerciseEquipment[]
+  muscles          ExerciseMuscle[]
+  programExercises ProgramExercise[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+}
+
+model CoreSet {
+  id                String          @id @default(cuid())
+  reps              Int
+  weight            Float
+  restTime          Int
+  order             Int
+  isWarmup          Boolean         @default(false)
+  repsInReserve     Int?            @default(0)
+  programExerciseId String
+  programExercise   ProgramExercise @relation(fields: [programExerciseId], references: [id], onDelete: Cascade)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model ProgramExercise {
+  id         String       @id @default(cuid())
+  order      Int
+  notes      String?
+  daysOfWeek DaysOfWeek[]
+  coreSets   CoreSet[]
+  exerciseId String
+  exercise   Exercise     @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  programId  String
+  program    Program      @relation(fields: [programId], references: [id], onDelete: Cascade)
+  isActive   Boolean      @default(true)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model Program {
+  id               String            @id @default(cuid())
+  name             String            @unique
+  notes            String?
+  startDate        DateTime
+  endDate          DateTime
+  isActive         Boolean           @default(true)
+  programExercises ProgramExercise[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 }

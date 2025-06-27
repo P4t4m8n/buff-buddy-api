@@ -1,17 +1,16 @@
 import { Request, Response } from "express";
 import { AppError } from "../../shared/services/Error.service";
+import { programsService } from "./programs.service";
 import {
-  CreateExerciseSchema,
-  UpdateExerciseSchema,
-} from "./exercises.validations";
-import { exerciseService } from "./exercises.service";
+  CreateProgramSchema,
+  UpdateProgramSchema,
+} from "./programs.validations";
 
-export const getExercises = async (req: Request, res: Response) => {
+export const getPrograms = async (req: Request, res: Response) => {
   try {
     const filter = req.query as Record<string, string>;
-    const exercises = await exerciseService.getAll(filter);
-
-    res.status(200).json(exercises);
+    const programs = await programsService.getAll(filter);
+    res.status(200).json(programs);
   } catch (error) {
     const err = AppError.handleResponse(error);
     res.status(err.status || 500).json({
@@ -21,17 +20,14 @@ export const getExercises = async (req: Request, res: Response) => {
   }
 };
 
-export const getExerciseById = async (req: Request, res: Response) => {
+export const getProgramById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const exercise = await exerciseService.getBtyId(id);
-    if (!exercise) {
-      throw new AppError("Exercise not found", 404);
+    const program = await programsService.getById(id);
+    if (!program) {
+      throw new AppError("Program not found", 404);
     }
-
-    res.status(200).json({
-      data: exercise,
-    });
+    res.status(200).json(program);
   } catch (error) {
     const err = AppError.handleResponse(error);
     res.status(err.status || 500).json({
@@ -41,15 +37,13 @@ export const getExerciseById = async (req: Request, res: Response) => {
   }
 };
 
-export const createExercise = async (req: Request, res: Response) => {
+export const createProgram = async (req: Request, res: Response) => {
   try {
-    const validatedData = CreateExerciseSchema.parse(req.body);
-
-    const exercise = await exerciseService.create(validatedData);
-
+    const validatedData = CreateProgramSchema.parse(req.body);
+    const program = await programsService.create(validatedData);
     res.status(201).json({
-      message: "Exercise created successfully",
-      data: exercise,
+      message: "Program created successfully",
+      data: program,
     });
   } catch (error) {
     const err = AppError.handleResponse(error);
@@ -60,15 +54,14 @@ export const createExercise = async (req: Request, res: Response) => {
   }
 };
 
-export const updateExercise = async (req: Request, res: Response) => {
+export const updateProgram = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const validatedData = UpdateExerciseSchema.parse(req.body);
-
-    const exercise = await exerciseService.update(id, validatedData);
-
+    const validatedData = UpdateProgramSchema.parse(req.body);
+    const program = await programsService.update(id, validatedData);
     res.status(200).json({
-      data: exercise,
+      message: "Program updated successfully",
+      data: program,
     });
   } catch (error) {
     const err = AppError.handleResponse(error);
@@ -79,14 +72,13 @@ export const updateExercise = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteExercise = async (req: Request, res: Response) => {
+export const deleteProgram = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
-    await exerciseService.delete(id);
-
+    const program = await programsService.delete(id);
     res.status(200).json({
-      message: "Exercise deleted successfully",
+      message: "Program deleted successfully",
+      data: program,
     });
   } catch (error) {
     const err = AppError.handleResponse(error);

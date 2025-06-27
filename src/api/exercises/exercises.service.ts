@@ -61,12 +61,12 @@ export const exerciseService = {
       take,
     });
   },
-  getBtyId: async (id: string): Promise<Exercise > => {
-    return await prisma.exercise.findUniqueOrThrow({
+  getBtyId: async (id: string): Promise<Exercise | null> => {
+    return await prisma.exercise.findUnique({
       where: { id },
     });
   },
-  add: async (dto: CreateExerciseInput): Promise<Exercise> => {
+  create: async (dto: CreateExerciseInput): Promise<Exercise> => {
     return await prisma.exercise.create({
       data: {
         name: dto.name,

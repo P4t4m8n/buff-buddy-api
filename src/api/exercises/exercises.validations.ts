@@ -1,7 +1,6 @@
 import { z } from "zod";
 import sanitizeHtml from "sanitize-html";
 
-// Enum validations based on Prisma schema
 export const ExerciseMuscleSchema = z.enum([
   "abs",
   "back",
@@ -43,16 +42,15 @@ export const ExerciseTypeSchema = z.enum([
   "balance",
 ]);
 
-// Exercise validation schema with sanitization
 export const CreateExerciseSchema = z.object({
   name: z
     .string()
     .min(1, "Exercise name is required")
-    .max(200, "Exercise name must be less than 200 characters") // Increased for pre-sanitization
+    .max(200, "Exercise name must be less than 200 characters") // Increased for pre sanitization
     .transform((val) =>
       sanitizeHtml(val, { allowedTags: [], allowedAttributes: {} })
     )
-    .transform((val) => val.trim()) // Remove whitespace
+    .transform((val) => val.trim()) 
     .transform((val) => val.replace(/\s+/g, " ")) // Replace multiple spaces with single space
     .refine(
       (val) => val.length >= 1,
@@ -138,7 +136,6 @@ export const ExerciseQuerySchema = z.object({
   page: z.coerce.number().min(1).optional(),
 });
 
-// Export types for use in controllers/services
 export type CreateExerciseInput = z.infer<typeof CreateExerciseSchema>;
 export type UpdateExerciseInput = z.infer<typeof UpdateExerciseSchema>;
 export type ExerciseParams = z.infer<typeof ExerciseParamsSchema>;
