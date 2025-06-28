@@ -6,6 +6,7 @@ import path from "path";
 import dotenv from "dotenv";
 import { exerciseRoutes } from "./api/exercises/exercises.routes";
 import { programsRoutes } from "./api/programs/programs.routes";
+import { authRoutes } from "./api/auth/auth.routes";
 
 dotenv.config();
 
@@ -33,9 +34,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //Routes
-
+app.use(`/api/v${process.env.CURRENT_API_VERSION}/auth`, authRoutes);
 app.use(`/api/v${process.env.CURRENT_API_VERSION}/exercises`, exerciseRoutes);
-
 app.use(`/api/v${process.env.CURRENT_API_VERSION}/programs`, programsRoutes);
 // Catch-all route
 app.all("/{*any}", (req: Request, res: Response) => {

@@ -1,39 +1,37 @@
-// import { Request, Response, NextFunction } from "express";
-// import { asyncLocalStorage } from "./localStorage.middleware";
-// import Logger from "../src/services/Logger.service";
+import { Request, Response, NextFunction } from "express";
+import { asyncLocalStorage } from "./localStorage.middleware";
 
-// export async function requireAuth(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ): Promise<void> {
-//   const store = asyncLocalStorage.getStore();
-//   if (!store?.loggedinUser) {
-//     res.status(401).send("Not Authenticated");
-//     return;
-//   }
+export async function requireAuth(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  const store = asyncLocalStorage.getStore();
+  if (!store?.sessionUser) {
+    res.status(401).send("Not Authenticated");
+    return;
+  }
 
-//   next();
-// }
+  next();
+}
 
-// export async function requireAdmin(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ): Promise<void> {
-//   const store = asyncLocalStorage.getStore();
-//   const loggedinUser = store?.loggedinUser;
+export async function requireAdmin(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  const store = asyncLocalStorage.getStore();
+  const sessionUser = store?.sessionUser;
 
-//   if (!loggedinUser) {
-//     res.status(401).send("Not Authenticated");
-//     return;
-//   }
+  if (!sessionUser) {
+    res.status(401).send("Not Authenticated");
+    return;
+  }
 
-//   if (!loggedinUser.isTrainer) {
-//     Logger.warn(`${loggedinUser.id} attempted to perform admin action`);
-//     res.status(403).send("Not Authorized");
-//     return;
-//   }
+  if (!sessionUser.isAdmin) {
+    res.status(403).send("Not Authorized");
+    return;
+  }
 
-//   next();
-// }
+  next();
+}

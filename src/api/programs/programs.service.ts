@@ -42,7 +42,7 @@ export const programsService = {
     });
   },
 
-  create: async (dto: CreateProgramInput): Promise<Program> => {
+  create: async (dto: CreateProgramInput, userId: string): Promise<Program> => {
     return await prisma.program.create({
       data: {
         name: dto.name,
@@ -50,6 +50,9 @@ export const programsService = {
         isActive: dto.isActive,
         startDate: dto.startDate,
         endDate: dto.endDate,
+        owner: {
+          connect: { id: userId },
+        },
         programExercises: {
           create: dto.programExercises
             .filter((pe) => pe.curdOperation === "create")

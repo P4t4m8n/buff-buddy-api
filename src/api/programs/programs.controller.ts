@@ -5,6 +5,7 @@ import {
   CreateProgramSchema,
   UpdateProgramSchema,
 } from "./programs.validations";
+import { asyncLocalStorage } from "../../middlewares/localStorage.middleware";
 
 export const getPrograms = async (req: Request, res: Response) => {
   try {
@@ -40,7 +41,11 @@ export const getProgramById = async (req: Request, res: Response) => {
 export const createProgram = async (req: Request, res: Response) => {
   try {
     const validatedData = CreateProgramSchema.parse(req.body);
-    const program = await programsService.create(validatedData);
+    const id = asyncLocalStorage.getStore()?.sessionUser?.id;
+    if (!id) {
+      throw new AppError("User not authenticated", 401);
+    }
+    const program = await programsService.create(validatedData, id);
     res.status(201).json({
       message: "Program created successfully",
       data: program,
