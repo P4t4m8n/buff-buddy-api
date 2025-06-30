@@ -75,7 +75,6 @@ export const signOut = async (req: Request, res: Response) => {
 export const getSessionUser = async (req: Request, res: Response) => {
   try {
     const token = req.cookies.token;
-    console.log(" getSessionUser ~ token:", token)
     if (!token) {
       throw AppError.create("Unauthorized", 401);
     }
@@ -108,7 +107,6 @@ export const googleRedirect = async (req: Request, res: Response) => {
 };
 
 export const googleCallback = async (req: Request, res: Response) => {
-  console.log(" googleCallback ~ req:", req.url);
   try {
     const { code } = req.query;
     if (!code) {
@@ -187,10 +185,8 @@ export const googleCallback = async (req: Request, res: Response) => {
         throw error;
       }
     }
-    console.log(" googleCallback ~ token:", token);
 
     const frontendUrl = process.env.FRONTEND_URL;
-    console.log(" googleCallback ~ frontendUrl:", frontendUrl);
     res.cookie("token", token, COOKIE).redirect(frontendUrl!);
   } catch (error) {
     const err = AppError.handleResponse(error);

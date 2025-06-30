@@ -16,7 +16,6 @@ export const ExerciseMuscleSchema = z.enum([
   "neck",
   "obliques",
   "quads",
-  "rear_delts",
   "shoulders",
   "shins",
   "traps",

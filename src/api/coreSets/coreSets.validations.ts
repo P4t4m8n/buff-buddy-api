@@ -93,7 +93,7 @@ export const CreateNestedCoreSetSchema = z.object({
     .max(20, "Reps in reserve cannot exceed 20")
     .nullable()
     .default(0),
-  curdOperation: z.optional(crudOperationSchema).default("read"),
+  crudOperation: z.optional(crudOperationSchema).default("read"),
     id: z.optional(z.string()),
 
 });

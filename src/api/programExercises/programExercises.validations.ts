@@ -140,7 +140,7 @@ export const CreateNestedProgramExerciseSchema = z.object({
     .array(CreateNestedCoreSetSchema)
     .min(1, "At least one set is required")
     .max(20, "Maximum 20 sets allowed per exercise"),
-  curdOperation: z.optional(crudOperationSchema).default("read"),
+  crudOperation: z.optional(crudOperationSchema).default("read"),
   id: z.optional(z.string()),
 });
 

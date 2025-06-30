@@ -150,7 +150,6 @@ describe("Programs API", () => {
       const res = await request(app)
         .post("/api/v1/programs/edit")
         .send(invalidProgram);
-      console.log("res:", res);
 
       expect(res.status).toBe(400);
       expect(res.body.errors.endDate).toContain(

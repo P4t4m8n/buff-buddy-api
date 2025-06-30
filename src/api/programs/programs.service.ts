@@ -55,7 +55,7 @@ export const programsService = {
         },
         programExercises: {
           create: dto.programExercises
-            .filter((pe) => pe.curdOperation === "create")
+            .filter((pe) => pe.crudOperation === "create")
             .map((pe) => ({
               order: pe.order,
               notes: pe.notes,
@@ -66,7 +66,7 @@ export const programsService = {
               },
               coreSets: {
                 create: pe.coreSets
-                  .filter((cs) => cs.curdOperation === "create")
+                  .filter((cs) => cs.crudOperation === "create")
                   .map((cs) => ({
                     reps: cs.reps,
                     weight: cs.weight,
@@ -134,7 +134,7 @@ export const programsService = {
                   },
                 })),
                 deleteMany: pe.coreSets
-                  .filter((cs) => cs.curdOperation === "delete")
+                  .filter((cs) => cs.crudOperation === "delete")
                   .map((cs) => ({ id: cs.id })),
               },
             },
@@ -157,7 +157,7 @@ export const programsService = {
             },
           })),
           deleteMany: (dto?.programExercises ?? [])
-            .filter((pe) => pe.curdOperation === "delete")
+            .filter((pe) => pe.crudOperation === "delete")
             .map((pe) => ({ id: pe.id })),
         },
       },

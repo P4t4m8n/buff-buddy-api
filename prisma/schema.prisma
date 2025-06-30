@@ -23,7 +23,6 @@ enum ExerciseMuscle {
   neck
   obliques
   quads
-  rear_delts
   shoulders
   shins
   traps
@@ -132,7 +131,7 @@ model ProgramExercise {
 
 model Program {
   id               String            @id @default(cuid())
-  name             String            @unique
+  name             String
   notes            String?
   startDate        DateTime
   endDate          DateTime

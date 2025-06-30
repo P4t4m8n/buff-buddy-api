@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import { exerciseRoutes } from "./api/exercises/exercises.routes";
 import { programsRoutes } from "./api/programs/programs.routes";
 import { authRoutes } from "./api/auth/auth.routes";
+import { setupAsyncLocalStorage } from "./middlewares/localStorage.middleware";
 
 dotenv.config();
 
@@ -16,8 +17,10 @@ export const server = http.createServer(app);
 
 //Middlewares
 app.use(express.json());
+
 //TODO?? build cookie parser and signed cookies, using library for now
 app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(setupAsyncLocalStorage);
 //Local storage for easy access to user data in the back
 // import { setupAsyncLocalStorage } from "./middlewares/localStorage.middleware";
 // app.use(setupAsyncLocalStorage);
