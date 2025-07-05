@@ -41,7 +41,8 @@ export const getProgramById = async (req: Request, res: Response) => {
 export const createProgram = async (req: Request, res: Response) => {
   try {
     const validatedData = CreateProgramSchema.parse(req.body);
-    const id = asyncLocalStorage.getStore()?.sessionUser?.id;
+    const id = "cmcgkqf590000hdswzd7aym5g"
+    // const id = asyncLocalStorage.getStore()?.sessionUser?.id;
     if (!id) {
       throw new AppError("User not authenticated", 401);
     }
@@ -62,10 +63,9 @@ export const createProgram = async (req: Request, res: Response) => {
 export const updateProgram = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    console.log(" updateProgram ~ id:", id)
-    console.log(" updateProgram ~ req.body:", req.body)
+
+    
     const validatedData = UpdateProgramSchema.parse(req.body);
-    console.log(" updateProgram ~ validatedData:", validatedData)
     const program = await programsService.update(id, validatedData);
     res.status(200).json({
       message: "Program updated successfully",
@@ -73,7 +73,6 @@ export const updateProgram = async (req: Request, res: Response) => {
     });
   } catch (error) {
     const err = AppError.handleResponse(error);
-    console.log(" updateProgram ~ err:", err)
     res.status(err.status || 500).json({
       message: err.message || "An unexpected error occurred",
       errors: err.errors || {},

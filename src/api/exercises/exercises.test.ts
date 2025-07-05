@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app, server } from "../../server";
+import { app } from "../../server";
 
 describe("Exercises API", () => {
   beforeAll(async () => {});
@@ -67,9 +67,7 @@ describe("Exercises API", () => {
     expect(res.status).toBe(200);
   });
 
-  afterAll((done) => {
-    server.close(done);
-  });
+
 });
 
 describe("POST /api/v1/exercises/edit", () => {
@@ -119,9 +117,7 @@ describe("POST /api/v1/exercises/edit", () => {
       } catch (error) {}
     }
   });
-  afterAll((done) => {
-    server.close(done);
-  });
+
 });
 
 describe("GET /api/v1/exercises/:id", () => {
@@ -167,9 +163,7 @@ describe("GET /api/v1/exercises/:id", () => {
     }
   });
 
-  afterAll((done) => {
-    server.close(done);
-  });
+
 });
 
 describe("PUT /api/v1/exercises/edit/:id", () => {
@@ -227,9 +221,7 @@ describe("PUT /api/v1/exercises/edit/:id", () => {
     }
   });
 
-  afterAll((done) => {
-    server.close(done);
-  });
+
 });
 
 describe("DELETE /api/v1/exercises/:id", () => {
@@ -270,7 +262,5 @@ describe("DELETE /api/v1/exercises/:id", () => {
 
     expect(res.status).toBe(400);
   });
-  afterAll((done) => {
-    server.close(done);
-  });
+
 });

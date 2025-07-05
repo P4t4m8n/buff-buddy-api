@@ -50,7 +50,7 @@ describe("Programs API", () => {
             daysOfWeek: ["monday", "wednesday", "friday"],
             exerciseId: testExerciseId,
             isActive: true,
-            curdOperation: "create",
+            crudOperation: "create",
             coreSets: [
               {
                 reps: 10,
@@ -59,7 +59,7 @@ describe("Programs API", () => {
                 order: 1,
                 isWarmup: false,
                 repsInReserve: 2,
-                curdOperation: "create",
+                crudOperation: "create",
               },
               {
                 reps: 8,
@@ -68,7 +68,7 @@ describe("Programs API", () => {
                 order: 2,
                 isWarmup: false,
                 repsInReserve: 1,
-                curdOperation: "create",
+                crudOperation: "create",
               },
             ],
           },
@@ -78,7 +78,7 @@ describe("Programs API", () => {
             daysOfWeek: ["monday"],
             exerciseId: testExerciseId,
             isActive: true,
-            curdOperation: "create",
+            crudOperation: "create",
             coreSets: [
               {
                 reps: 15,
@@ -87,7 +87,7 @@ describe("Programs API", () => {
                 order: 1,
                 isWarmup: true,
                 repsInReserve: 5,
-                curdOperation: "create",
+                crudOperation: "create",
               },
             ],
           },
@@ -133,14 +133,14 @@ describe("Programs API", () => {
             order: 1,
             daysOfWeek: ["monday"],
             exerciseId: testExerciseId,
-            curdOperation: "create",
+            crudOperation: "create",
             coreSets: [
               {
                 reps: 10,
                 weight: 100,
                 restTime: 60,
                 order: 1,
-                curdOperation: "create",
+                crudOperation: "create",
               },
             ],
           },
@@ -172,14 +172,14 @@ describe("Programs API", () => {
             order: 1,
             daysOfWeek: ["tuesday"],
             exerciseId: testExerciseId,
-            curdOperation: "create",
+            crudOperation: "create",
             coreSets: [
               {
                 reps: 12,
                 weight: 120,
                 restTime: 90,
                 order: 1,
-                curdOperation: "create",
+                crudOperation: "create",
               },
             ],
           },
@@ -230,14 +230,14 @@ describe("Programs API", () => {
             order: 1,
             daysOfWeek: ["thursday"],
             exerciseId: testExerciseId,
-            curdOperation: "create",
+            crudOperation: "create",
             coreSets: [
               {
                 reps: 8,
                 weight: 155,
                 restTime: 180,
                 order: 1,
-                curdOperation: "create",
+                crudOperation: "create",
               },
             ],
           },
@@ -262,21 +262,21 @@ describe("Programs API", () => {
             notes: "Updated exercise notes",
             daysOfWeek: ["thursday", "saturday"],
             exerciseId: testExerciseId,
-            curdOperation: "update",
+            crudOperation: "update",
             coreSets: [
               {
                 reps: 10,
                 weight: 165,
                 restTime: 150,
                 order: 1,
-                curdOperation: "update",
+                crudOperation: "update",
               },
               {
                 reps: 6,
                 weight: 175,
                 restTime: 200,
                 order: 2,
-                curdOperation: "create",
+                crudOperation: "create",
               },
             ],
           },
@@ -320,14 +320,14 @@ describe("Programs API", () => {
             order: 1,
             daysOfWeek: ["sunday"],
             exerciseId: testExerciseId,
-            curdOperation: "create",
+            crudOperation: "create",
             coreSets: [
               {
                 reps: 15,
                 weight: 75,
                 restTime: 45,
                 order: 1,
-                curdOperation: "create",
+                crudOperation: "create",
               },
             ],
           },
@@ -375,6 +375,5 @@ describe("Programs API", () => {
       } catch (error) {}
     }
 
-    server.close();
   });
 });

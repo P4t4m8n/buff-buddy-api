@@ -92,12 +92,12 @@ export const authService = {
     if (!token) {
       return null;
     }
-
+    
     const secret = process.env.JWT_SECRET;
     if (!secret) {
       throw AppError.create("JWT_SECRET is not defined", 500);
     }
-
+    
     const decoded = jwt.verify(token, secret) as {
       userId: string;
       isAdmin: boolean;

@@ -79,6 +79,14 @@ export const programsService = {
             })),
         },
       },
+      include: {
+        programExercises: {
+          include: {
+            exercise: true,
+            coreSets: true,
+          },
+        },
+      },
     });
   },
 

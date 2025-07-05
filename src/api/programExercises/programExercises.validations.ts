@@ -38,7 +38,7 @@ export const CreateProgramExerciseSchema = z.object({
     })
     .transform((val) => {
       if (!val) return undefined;
-      return val.replace(/\s+/g, " "); // Replace multiple spaces with single space
+      return val.replace(/\s+/g, " ");
     })
     .refine(
       (val) => !val || val.length <= 500,
@@ -86,16 +86,11 @@ export const CreateProgramExerciseSchema = z.object({
 export const UpdateProgramExerciseSchema =
   CreateProgramExerciseSchema.partial();
 
-export const CreateNestedProgramExerciseSchema = z.object({
-  order: z.coerce
-    .number()
-    .int("Order must be a whole number")
-    .min(1, "Order must be at least 1")
-    .max(100, "Order cannot exceed 100"),
-
+const NestedProgramExerciseObjectSchema = z.object({
+  order: z.coerce.number(),
   notes: z
     .string()
-    .optional()
+    .nullish()
     .transform((val) => {
       if (!val) return undefined;
       return sanitizeHtml(val, {
@@ -144,8 +139,56 @@ export const CreateNestedProgramExerciseSchema = z.object({
   id: z.optional(z.string()),
 });
 
+const nestedProgramExerciseRefinement = (
+  data: { order?: number; crudOperation?: string },
+  ctx: z.RefinementCtx
+) => {
+  if (data.crudOperation !== "delete") {
+    if (data.order === undefined) {
+      // For create operations, order is required. For update, it's optional.
+      if (data.crudOperation !== "update") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Order is required",
+          path: ["order"],
+        });
+      }
+    } else {
+      if (!Number.isInteger(data.order)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Order must be a whole number",
+          path: ["order"],
+        });
+      } else {
+        if (data.order < 1) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Order must be at least 1",
+            path: ["order"],
+          });
+        }
+        if (data.order > 100) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Order cannot exceed 100",
+            path: ["order"],
+          });
+        }
+      }
+    }
+  }
+};
+
+export const CreateNestedProgramExerciseSchema =
+  NestedProgramExerciseObjectSchema.superRefine(
+    nestedProgramExerciseRefinement
+  );
+
 export const UpdateNestedProgramExerciseSchema =
-  CreateNestedProgramExerciseSchema.partial();
+  NestedProgramExerciseObjectSchema.partial().superRefine(
+    nestedProgramExerciseRefinement
+  );
 
 export const ProgramExerciseParamsSchema = z.object({
   id: z.string().min(1, "ProgramExercise ID is required"),

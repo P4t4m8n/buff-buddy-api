@@ -1,9 +1,11 @@
 import { z } from "zod";
 import sanitizeHtml from "sanitize-html";
+import { conditionalOrderRefinement } from "../../shared/validations/shared.validations";
 
 export const crudOperationSchema = z.enum([
   "create",
   "update",
+  "edit",
   "delete",
   "read",
 ]);
@@ -59,7 +61,8 @@ export const CreateCoreSetSchema = z.object({
 
 export const UpdateCoreSetSchema = CreateCoreSetSchema.partial();
 
-export const CreateNestedCoreSetSchema = z.object({
+const NestedCoreSetSchema = z.object({
+  order: z.coerce.number(),
   reps: z.coerce
     .number()
     .int("Reps must be a whole number")
@@ -77,13 +80,6 @@ export const CreateNestedCoreSetSchema = z.object({
     .int("Rest time must be a whole number")
     .min(0, "Rest time cannot be negative")
     .max(3600, "Rest time cannot exceed 1 hour (3600 seconds)"),
-
-  order: z.coerce
-    .number()
-    .int("Order must be a whole number")
-    .min(1, "Order must be at least 1")
-    .max(100, "Order cannot exceed 100"),
-
   isWarmup: z.coerce.boolean().default(false),
 
   repsInReserve: z.coerce
@@ -94,11 +90,15 @@ export const CreateNestedCoreSetSchema = z.object({
     .nullable()
     .default(0),
   crudOperation: z.optional(crudOperationSchema).default("read"),
-    id: z.optional(z.string()),
-
+  id: z.optional(z.string()),
 });
 
-export const UpdateNestedCoreSetSchema = CreateNestedCoreSetSchema.partial();
+export const CreateNestedCoreSetSchema = NestedCoreSetSchema.superRefine(
+  conditionalOrderRefinement
+);
+
+export const UpdateNestedCoreSetSchema =
+  NestedCoreSetSchema.partial().superRefine(conditionalOrderRefinement);
 
 export const CoreSetParamsSchema = z.object({
   id: z.string().min(1, "CoreSet ID is required"),

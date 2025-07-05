@@ -93,6 +93,7 @@ model CoreSet {
   order             Int
   isWarmup          Boolean         @default(false)
   repsInReserve     Int?            @default(0)
+  isHistory         Boolean         @default(false)
   programExerciseId String
   programExercise   ProgramExercise @relation(fields: [programExerciseId], references: [id], onDelete: Cascade)
   userSets          UserSet[]
